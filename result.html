@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Prediction Result</title>
+    <style>
+        body {
+            background: url("/static/back.jpg") no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Segoe UI', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .result-box {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        .result-box h1 {
+            font-size: 2.5rem;
+            color: #333;
+        }
+        .result-box p {
+            font-size: 2rem;
+            font-weight: bold;
+            color: {{ 'green' if result == 'Real' else 'red' }};
+            margin-bottom: 20px;
+        }
+        .note-img {
+            width: 300px;
+            border: 4px solid #555;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .features-box {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: left;
+            margin-top: 20px;
+        }
+        .features-box h2 {
+            font-size: 1.5rem;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .features-box ul {
+            list-style: none;
+            padding: 0;
+        }
+        .features-box ul li {
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+        .features-box ul li span {
+            margin-right: 8px;
+            font-size: 1.2rem;
+        }
+        .check {
+            color: green;
+        }
+        .cross {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="result-box">
+        <h1>Prediction Result</h1>
+        <p>{{ result }}</p>
+        <img src="{{ url_for('static', filename='uploads/' + image_file) }}" alt="Uploaded Image" class="note-img">
+
+        <div class="features-box">
+            <h2>Detected Image Features:</h2>
+            <ul>
+                {% for feature in features %}
+                <li>
+                    <span class="{{ 'check' if feature.valid else 'cross' }}">
+                        {{ '✅' if feature.valid else '❌' }}
+                    </span>{{ feature.name }}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

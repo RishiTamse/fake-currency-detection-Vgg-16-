@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ZIP Prediction Results</title>
+    <style>
+        body {
+            background: url("/static/back.jpg") no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 40px;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+        }
+        .card {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.3);
+            width: 350px;
+        }
+        .card h2 {
+            margin: 0;
+            font-size: 1.4rem;
+            color: #2c3e50;
+        }
+        .prediction {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin: 10px 0;
+            color: green;
+        }
+        .prediction.fake {
+            color: red;
+        }
+        .note-img {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border: 3px solid #555;
+        }
+        .features-box {
+            background: #f5f5f5;
+            padding: 10px;
+            border-radius: 10px;
+            text-align: left;
+        }
+        .features-box h3 {
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+        .features-box ul {
+            list-style: none;
+            padding: 0;
+            font-size: 0.95rem;
+        }
+        .features-box li {
+            margin-bottom: 5px;
+        }
+        .features-box li span {
+            margin-right: 6px;
+            font-size: 1.1rem;
+        }
+        .check {
+            color: green;
+        }
+        .cross {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align:center; color:white;">Results for Uploaded ZIP File</h1>
+    <div class="container">
+        {% for result in results %}
+        <div class="card">
+            <img src="{{ url_for('static', filename='uploads/' + result.filename) }}" class="note-img" alt="{{ result.filename }}">
+            <h2>{{ result.filename }}</h2>
+            <div class="prediction {{ 'fake' if result.result == 'Fake' else '' }}">{{ result.result }}</div>
+
+            <div class="features-box">
+                <h3>Detected Features:</h3>
+                <ul>
+                    {% for feature in result.features %}
+                        <li>
+                            <span class="{{ 'check' if feature.valid else 'cross' }}">
+                                {{ '✅' if feature.valid else '❌' }}
+                            </span>{{ feature.name }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
